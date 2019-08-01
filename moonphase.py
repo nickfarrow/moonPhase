@@ -1,6 +1,3 @@
-from bs4 import BeautifulSoup
-import time
-import requests
 import urllib.request as req
 import os
 import imageio
@@ -24,7 +21,7 @@ def makeVideo(directory):
 	imageio.mimsave(directory + 'movie.gif', images)	
 	return
 
-def main(startNumber=1, thinning=1):
+def main(startNumber=1, thinning=10):
     
     directory = 'images/'
 
