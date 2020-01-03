@@ -28,12 +28,14 @@ def getImage(imageNumber, directory):
     req.urlretrieve(URL, imageName)
     return
 
-def makeVideo(directory, ffmpeg=False):
+def makeVideo(directory, startNumber, thinning, ffmpeg=False):
     """Create a video with the downloaded images"""
     
     # Get a list of all the files 
     files = [image for image in os.listdir(directory) if ".jpg" in image]
     
+
+    # Create a video using ffmpeg command
     if ffmpeg:
         frameRate = str(len(files)/60)
         subprocess.run(
@@ -44,12 +46,13 @@ def makeVideo(directory, ffmpeg=False):
                 "-vb", "20M", "moon.mp4"], check=True)
     
     else:
-        # Save each frame to a list
+        # Save each image frame to a list
         images = []
-        for frameFile in files:
-            images.append(imageio.imread(directory + frameFile))
-            
-        imageio.mimsave(directory + 'movie.gif', images)	
+        for imageNumber in range(startNumber, 8761, thinning):
+            imageName = directory + addZeros(imageNumber) + ".jpg"
+            images.append(imageio.imread(imageName))
+
+        imageio.mimsave('moon.gif', images)
     return
 
 def main(startNumber=1, thinning=1, ffmpeg=False):
@@ -59,10 +62,16 @@ def main(startNumber=1, thinning=1, ffmpeg=False):
     if not os.path.exists(directory):
         os.makedirs(directory)
     
-    for imageNumber in range(startNumber, 8761, thinning):
+    for imageNumber in range(startNumber, 8761, thinning): 
+        imageNumber = addZeros(imageNumber)
+        
+        # Skip if already downloaded
+        if os.path.exists(directory + imageNumber + ".jpg"):
+            print("Already downloadad " + imageNumber)
+            continue
+            
         while True:
             try:
-                imageNumber = addZeros(imageNumber)
                 getImage(imageNumber, directory)
                 print("Done " + imageNumber)
             except Exception as e:
@@ -71,7 +80,7 @@ def main(startNumber=1, thinning=1, ffmpeg=False):
             break
             
     print("Making video...")
-    makeVideo(directory, ffmpeg)
+    makeVideo(directory, startNumber, thinning, ffmpeg)
     return
 
 
