@@ -62,18 +62,28 @@ def main(startNumber=1, thinning=1, ffmpeg=False):
     if not os.path.exists(directory):
         os.makedirs(directory)
     
-    for imageNumber in range(startNumber, 8761, thinning): 
+    for imageNumber in range(startNumber, 8761, thinning):
+        imagePercent = imageNumber
         imageNumber = addZeros(imageNumber)
         
         # Skip if already downloaded
         if os.path.exists(directory + imageNumber + ".jpg"):
-            print("Already downloadad " + imageNumber)
+            print("Already downloaded " + imageNumber)  
             continue
             
         while True:
             try:
                 getImage(imageNumber, directory)
-                print("Done " + imageNumber)
+                percent = imagePercent / 87.61
+                percent=round(percent,2)
+                barre = (
+                        "["
+                        + "#" * int((50 / 100) * percent)
+                        + "-" * int((50 / 100) * (100 - percent))
+                        + "]"
+                )
+                print('\033c')
+                print(str(percent)+str("% ")+barre)
             except Exception as e:
                 print(e)
                 continue
