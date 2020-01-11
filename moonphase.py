@@ -62,8 +62,8 @@ def main(startNumber=1, thinning=1, ffmpeg=False):
     if not os.path.exists(directory):
         os.makedirs(directory)
     
-    for imageNumber in range(startNumber, 8761, thinning):
-        imagePercent = imageNumber
+    for i, imageNumber in enumerate(range(startNumber, 8761, thinning)):
+        percent = round(imageNumber/87.61)
         imageNumber = addZeros(imageNumber)
         
         # Skip if already downloaded
@@ -74,16 +74,23 @@ def main(startNumber=1, thinning=1, ffmpeg=False):
         while True:
             try:
                 getImage(imageNumber, directory)
-                percent = imagePercent / 87.61
-                percent=round(percent,2)
-                barre = (
+                
+                # Create progress bar, we use 0.5*percentage
+                # for a shorter bar
+                bar = (
                         "["
-                        + "#" * int((50 / 100) * percent)
-                        + "-" * int((50 / 100) * (100 - percent))
+                        + "#" * int(0.5 * percent)
+                        + "-" * int(0.5 * (100 - percent))
                         + "]"
                 )
+                
+                # Clear terminal
                 print('\033c')
-                print(str(percent)+str("% ")+barre)
+
+                # Print progress
+                status = "Downloaded {}/{}, {}% ".format(i, 8761//thinning, percent)
+                print(status + bar)
+
             except Exception as e:
                 print(e)
                 continue
