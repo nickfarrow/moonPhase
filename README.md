@@ -1,5 +1,6 @@
 # moonPhase
-Downloads all 8762 photos of the moon from a NASA website and uses them to create a [fluid animation](https://www.youtube.com/watch?v=Cz1ED7FW4dk).
+Downloads all 8762 photos of the moon from a NASA website and uses them to create a fluid animation (click):
+[![video](https://img.youtube.com/vi/Cz1ED7FW4dk/0.jpg)](https://www.youtube.com/watch?v=Cz1ED7FW4dk)
 
 See [here for an introduction/tutorial](https://nicholasfarrow.com/Creating-a-Moon-Animation-Using-NASA-Images-and-Python/).
 
